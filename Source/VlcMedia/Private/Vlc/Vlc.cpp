@@ -3,8 +3,8 @@
 #include "Vlc.h"
 #include "VlcMediaPrivate.h"
 
-#include "IPluginManager.h"
 #include "HAL/PlatformProcess.h"
+#include "Interfaces/IPluginManager.h"
 #include "Misc/Paths.h"
 
 
@@ -61,6 +61,7 @@ VLC_DEFINE(GetVersion)
 VLC_DEFINE(Clock)
 
 VLC_DEFINE(MediaEventManager)
+VLC_DEFINE(MediaGetDuration)
 VLC_DEFINE(MediaGetStats)
 VLC_DEFINE(MediaNewCallbacks)
 VLC_DEFINE(MediaNewLocation)
@@ -142,7 +143,7 @@ bool FVlc::Initialize()
 	const FString VlcDir = FPaths::Combine(*BaseDir, TEXT("ThirdParty"), TEXT("vlc"));
 
 #if PLATFORM_LINUX
-	const FString LibDir = FPaths::Combine(*VlcDir, TEXT("Linux"), TEXT("x86_64-unknown-linux-gnu"));
+	const FString LibDir = FPaths::Combine(*VlcDir, TEXT("Linux"), TEXT("x86_64-unknown-linux-gnu"), TEXT("lib"));
 #elif PLATFORM_MAC
 	const FString LibDir = FPaths::Combine(*VlcDir, TEXT("Mac"));
 #elif PLATFORM_WINDOWS
@@ -167,6 +168,10 @@ bool FVlc::Initialize()
 	}
 
 	PluginDir = FPaths::ConvertRelativePathToFull(FPaths::Combine(*LibDir, TEXT("plugins")));
+    
+#if PLATFORM_LINUX
+	PluginDir = FPaths::ConvertRelativePathToFull(FPaths::Combine(*LibDir, TEXT("vlc"), TEXT("plugins")));
+#endif
 
 	// import library functions
 	VLC_IMPORT(libvlc_new, New)
@@ -192,6 +197,7 @@ bool FVlc::Initialize()
 	VLC_IMPORT(libvlc_clock, Clock)
 
 	VLC_IMPORT(libvlc_media_event_manager, MediaEventManager)
+	VLC_IMPORT(libvlc_media_get_duration, MediaGetDuration)
 	VLC_IMPORT(libvlc_media_get_stats, MediaGetStats)
 	VLC_IMPORT(libvlc_media_new_callbacks, MediaNewCallbacks)
 	VLC_IMPORT(libvlc_media_new_location, MediaNewLocation)

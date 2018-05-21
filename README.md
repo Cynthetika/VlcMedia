@@ -15,10 +15,10 @@ that are not yet available in the UE4 Master branch.
 
 ## Supported Platforms
 
-This plug-in was last built against **Unreal Engine 4.18** and tested
+This plug-in was last built against **Unreal Engine 4.19** and tested
 against the following platforms:
 
-- ~~Linux~~
+- Linux (Ubuntu 16.04)
 - ~~Mac~~
 - Windows
 
@@ -45,31 +45,28 @@ A relatively recent version of libvlc is required. The latest stable release
 (currently 2.2.1) is not sufficient.
 
 For Mac and Windows, the following nightly builds are currently included:
-* Mac: vlc-3.0.0-20170914-0450-git.dmg
-* Win32: vlc-3.0.0-20170914-0251-git-win32.zip
-* Win64: vlc-3.0.0-20170914-0457-git-win64.zip
+* macOS: vlc-4.0.0-20180319-0303-dev
+* Win32: vlc-4.0.0-20180319-0303-dev-win32
+* Win64: vlc-4.0.0-20180319-1331-dev-win64
 
 Nightly builds can be downloaded from the VideoLAN web site (see below).
 
 For debugging on Win32 and Win64, you can download debug builds and replace the
 corresponding files and folders in the *VlcMedia/ThirdParty/vlc/* directory.
 
-### Linux
+### Linux (Ubuntu 16.04)
 
 A suitable version of **libvlc** must be installed or compiled from source. If
 you ship your game on Linux, you will likely want to include libvlc with it, so
 that users don't have to install it themselves. We will eventually include those
 binaries in this repository, although it is not clear what distros should be
 supported and where the builds are coming from. A better workflow needs to be
-established for this.
+established for this (https://github.com/ue4plugins/VlcMedia/issues/17).
 
-Once the VLC libraries are installed on your machine, you need to add their path
-to your LD_LIBRARY_PATH](https://github.com/ue4plugins/VlcMedia/issues/17)
-environment variable. Copying the libraries and VLC plug-in's into VlcMedia's
-*/ThirdPart/vlc/Linux* directory is currently not supported out of the box as
-the [Build.cs](https://github.com/ue4plugins/VlcMedia/blob/master/Source/VlcMedia/VlcMedia.Build.cs#L52)
-file expects these files to be under the correct sub-directory for the target
-architecture.
+To clean up, clone, make and install VLC (including libvlc) into your project,
+run the *VlcMedia/Build/Vlc4LinuxCloneMakeInstall.sh* script from within your
+project's root folder. If you later need to make and re-install VLC from the
+existing VLC code, run the *Vlc4LinuxMakeInstall.sh* script instead.
 
 ### Mac, Windows
 
